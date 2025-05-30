@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+    
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">ติดต่อเรา</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('contact') }}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">ชื่อ-สกุล</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">อีเมล</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="subject" class="form-label">หัวข้อ</label>
+            <input type="text" class="form-control" id="subject" name="subject" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="message" class="form-label">รายละเอียด</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">ส่งข้อความ</button>
+    </form>
+</div>
+
+
+{% endblock %}

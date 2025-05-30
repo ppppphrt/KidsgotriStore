@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+    
+{% block content %}
+
+ <div class="container mt-5" style="max-width: 400px;">
+    <h2 class="mb-4 text-center">เพิ่มผู้ดูแลระบบ</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="post" action="{{ url_for('add_admin') }}">
+        <div class="mb-3">
+            <label for="username" class="form-label">ชื่อผู้ใช้</label>
+            <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">รหัสผ่าน</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100">เพิ่มผู้ดูแล</button>
+    </form>
+</div>
+
+
+{% endblock %}
