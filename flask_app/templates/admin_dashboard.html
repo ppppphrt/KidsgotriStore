@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายการสั่งซื้อ</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+        }
         .table-container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -22,13 +26,13 @@
         .table th, .table td {
             padding: 1rem;
             text-align: left;
-            border-right: 1px solid #e5e7eb; /* Light gray vertical line between columns */
+            border-right: 1px solid #e5e7eb;
         }
         .table th:last-child, .table td:last-child {
-            border-right: none; /* Remove border for the last column */
+            border-right: none;
         }
         .table th {
-            background-color: #3b82f6; /* Blue header */
+            background-color: #3b82f6;
             color: white;
             font-weight: 600;
         }
@@ -36,10 +40,16 @@
             transition: background-color 0.2s ease;
         }
         .table tbody tr:hover {
-            background-color: #f1f5f9; /* Light gray hover */
+            background-color: #f1f5f9;
         }
         .table tbody tr:nth-child(even) {
-            background-color: #f8fafc; /* Alternating row colors */
+            background-color: #f8fafc;
+        }
+        .slip-image {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 0.25rem;
         }
         @media (max-width: 640px) {
             .table th, .table td {
@@ -48,12 +58,13 @@
             }
             .table th:nth-child(4), .table td:nth-child(4),
             .table th:nth-child(5), .table td:nth-child(5) {
-                display: none; /* Hide phone and address on small screens */
+                display: none;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100">
     <div class="table-container">
         <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">รายการสั่งซื้อ</h3>
         <table class="table">
@@ -64,6 +75,7 @@
                     <th>ราคา</th>
                     <th>เบอร์</th>
                     <th>ที่อยู่</th>
+                    <th>สลิปการชำระเงิน</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,10 +86,43 @@
                     <td>{{ order.price }}</td>
                     <td>{{ order.phone }}</td>
                     <td>{{ order.address }}</td>
+                    <td>
+                        {% if order.payment_slip %}
+                        <a href="{{ url_for('view_payment_slip', order_id=order.id) }}" target="_blank">
+                            <img src="{{ url_for('view_payment_slip', order_id=order.id) }}" alt="Payment Slip" class="slip-image">
+                        </a>
+                        {% else %}
+                        ไม่มีสลิป
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <h3 class="text-2xl font-bold text-center mt-8 mb-6 text-gray-800">รายการติดต่อ</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ชื่อ</th>
+                    <th>อีเมล</th>
+                    <th>หัวข้อ</th>
+                    <th>ข้อความ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in contacts %}
+                <tr>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.subject }}</td>
+                    <td>{{ contact.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-6 text-center">
+            <a href="{{ url_for('admin_logout') }}" class="inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">ออกจากระบบ</a>
+        </div>
     </div>
 </body>
 </html>
