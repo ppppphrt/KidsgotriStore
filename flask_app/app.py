@@ -208,7 +208,8 @@ def view_payment_slip(order_id):
         BytesIO(order.payment_slip),
         mimetype=mime_type,
         as_attachment=False,
-        attachment_filename=order.payment_slip_filename or f"payment_slip_{order_id}.jpg"
+        download_name=order.payment_slip_filename or f"payment_slip_{order_id}.jpg"
+
     )
 
 @app.route('/admin/add', methods=['GET', 'POST'])
