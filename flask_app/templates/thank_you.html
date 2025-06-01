@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ขอบคุณสำหรับการสั่งซื้อ</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Prompt', sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .thank-you-container {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        .thank-you-header {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .thank-you-message {
+            color: #34495e;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        .order-details {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .order-details p {
+            margin: 10px 0;
+            color: #34495e;
+        }
+        .btn-home {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-home:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px;
+                padding: 10px;
+            }
+            .thank-you-container {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="thank-you-container">
+            <h2 class="thank-you-header"><i class="fas fa-check-circle text-green-500 mr-2"></i>ขอบคุณสำหรับการสั่งซื้อ!</h2>
+            <p class="thank-you-message">คำสั่งซื้อของคุณได้รับการบันทึกเรียบร้อยแล้ว ทางร้านจะติดต่อกลับภายใน 24 ชั่วโมง</p>
+            <div class="order-details">
+                <h3 class="text-lg font-semibold text-gray-800">รายละเอียดคำสั่งซื้อ</h3>
+                <p><strong>ชื่อ:</strong> {{ order.customer_name }}</p>
+                <p><strong>สินค้า:</strong> {{ order.product_name }}</p>
+                <p><strong>ราคา:</strong> {{ order.price }} บาท</p>
+                <p><strong>เบอร์โทรศัพท์:</strong> {{ order.phone }}</p>
+                <p><strong>ที่อยู่จัดส่ง:</strong> {{ order.address }}</p>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn-home"><i class="fas fa-home mr-2"></i>กลับสู่หน้าหลัก</a>
+        </div>
+    </div>
+</body>
+</html>
