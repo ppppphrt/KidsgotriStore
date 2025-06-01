@@ -109,7 +109,7 @@
                     <div class="form-header">
                         <h2><i class="fas fa-shopping-cart me-2"></i>แบบฟอร์มสั่งซื้อสินค้า</h2>
                     </div>
-                    <form method="POST" action="{{ url_for('order_product', product_id=product_id) }}">
+                    <form action="{{ url_for('order_product', product_id=product_id) }}" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="product_name" value="{{ product.name }}">
                         <input type="hidden" name="price" value="{{ product.price }}">
                         
@@ -134,6 +134,25 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-university me-2"></i>ข้อมูลบัญชีสำหรับชำระเงิน</label>
+                            <div class="bank-info">
+                                <p class="mb-2">ธนาคาร: ธนาคารกสิกรไทย</p>
+                                <p class="mb-2">ชื่อบัญชี: บริษัท ตัวอย่าง จำกัด</p>
+                                <p class="mb-2">เลขที่บัญชี: 123-4-56789-0</p>
+                                <button type="button" class="btn btn-copy" onclick="copyToClipboard('123-4-56789-0')">
+                                    <i class="fas fa-copy me-2"></i>คัดลอกเลขที่บัญชี
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="payment_slip" class="form-label"><i class="fas fa-file-upload me-2"></i>อัปโหลดสลิปการชำระเงิน</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+                                <input type="file" class="form-control" id="payment_slip" name="payment_slip" accept="image/*" required>
                             </div>
                         </div>
 
