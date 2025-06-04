@@ -51,6 +51,12 @@
             object-fit: cover;
             border-radius: 0.25rem;
         }
+        .items-list {
+            margin-top: 0.5rem;
+        }
+        .items-list li {
+            padding: 0.25rem 0;
+        }
         @media (max-width: 640px) {
             .table th, .table td {
                 font-size: 0.875rem;
@@ -72,7 +78,7 @@
                 <tr>
                     <th>ชื่อ</th>
                     <th>สินค้า</th>
-                    <th>ราคา</th>
+                    <th>ราคารวม</th>
                     <th>เบอร์</th>
                     <th>ที่อยู่</th>
                     <th>สลิปการชำระเงิน</th>
@@ -82,8 +88,18 @@
                 {% for order in orders %}
                 <tr>
                     <td>{{ order.customer_name }}</td>
-                    <td>{{ order.product_name }}</td>
-                    <td>{{ order.price }}</td>
+                    <td>
+                        {% if order.items %}
+                        <ul class="items-list">
+                            {% for item in order.items %}
+                            <li>{{ item.product_name }} ({{ item.quantity }} ชิ้น, ฿{{ item.price }} / ชิ้น, รวม ฿{{ item.total }})</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        ไม่มีสินค้า
+                        {% endif %}
+                    </td>
+                    <td>฿{{ order.total_price }}</td>
                     <td>{{ order.phone }}</td>
                     <td>{{ order.address }}</td>
                     <td>

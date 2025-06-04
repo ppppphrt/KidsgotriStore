@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มสั่งซื้อสินค้า</title>
+    <title>แบบฟอร์มชำระเงิน</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #f4f7fa;
@@ -16,18 +17,11 @@
             margin: 50px auto;
             padding: 20px;
         }
-        .form-container {
+        .form-container, .cart-container {
             background: #ffffff;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
-        }
-        .product-container {
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            text-align: center;
         }
         .form-header {
             text-align: center;
@@ -66,53 +60,87 @@
             background-color: #f8f9fa;
             border-radius: 8px 0 0 8px;
         }
-        .product-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
         }
-        .product-title {
+        .cart-item-title {
             color: #2c3e50;
-            font-weight: 600;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 1.2rem;
         }
-        .product-price {
+        .cart-item-price {
             color: #28a745;
-            font-size: 1.3rem;
             font-weight: 500;
         }
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
         @media (max-width: 768px) {
-            .product-container, .form-container {
+            .cart-container, .form-container {
                 margin-bottom: 20px;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <!-- Product Display (Left) -->
-            <!-- <div class="col-md-6"> -->
-                <!-- <div class="product-container">
-                    <h3 class="product-title">{{ product.name }}</h3>
-                    <img src="{{ url_for('static', filename=product.image_path) if product.image_path else url_for('static', filename='images/jacket1.jpg') }}" alt="{{ product.name | safe }}" class="product-image">
-                    <p class="product-price">ราคา: {{ product.price }} บาท</p> -->
-                    <!-- <p>รายละเอียดสินค้า: </p> -->
+            <!-- Cart Items Display (Left) -->
+            <div class="col-md-6">
+                <div class="cart-container">
+                    <h3 class="text-center mb-4"><i class="fas fa-shopping-cart me-2"></i>รายการสินค้าในตะกร้า</h3>
+                    {% if cart_items %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ภาพ</th>
+                                <th>สินค้า</th>
+                                <th>ราคา</th>
+                                <th>จำนวน</th>
+                                <!-- <th>รวม</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <!-- <td><img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" class="cart-item"></td> -->
+                                <td class="cart-item-title">{{ item.name }}</td>
+                                <td class="cart-item-price">฿{{ item.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>฿{{ item.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="text-end total-price">
+                        ราคารวมทั้งหมด: ฿{{ total_price }}
+                    </div>
+                    {% else %}
+                    <p class="text-center text-muted">ตะกร้าสินค้าของคุณว่างเปล่า</p>
+                    {% endif %}
                 </div>
             </div>
-            <!-- Form (Right) -->
+            <!-- Checkout Form (Right) -->
             <div class="col-md-6">
                 <div class="form-container">
                     <div class="form-header">
-                        <h2><i class="fas fa-shopping-cart me-2"></i>แบบฟอร์มสั่งซื้อสินค้า</h2>
+                        <h2><i class="fas fa-credit-card me-2"></i>แบบฟอร์มชำระเงิน</h2>
                     </div>
-                    <form action="{{ url_for('order_product', product_id=product_id) }}" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="product_name" value="{{ product.name }}">
-                        <input type="hidden" name="price" value="{{ product.price }}">
-                        
+                    <form action="{{ url_for('process_checkout') }}" method="POST" enctype="multipart/form-data">
+                        {% for item in cart_items %}
+                        <input type="hidden" name="cart_items[{{ item.id }}][product_id]" value="{{ item.id }}">
+                        <input type="hidden" name="cart_items[{{ item.id }}][name]" value="{{ item.name }}">
+                        <input type="hidden" name="cart_items[{{ item.id }}][price]" value="{{ item.price }}">
+                        <input type="hidden" name="cart_items[{{ item.id }}][quantity]" value="{{ item.quantity }}">
+                        <input type="hidden" name="cart_items[{{ item.id }}][total]" value="{{ item.total }}">
+                        {% endfor %}
+                        <input type="hidden" name="total_price" value="{{ total_price }}">
+
                         <div class="mb-3">
                             <label for="customer_name" class="form-label"><i class="fas fa-user me-2"></i>ชื่อผู้สั่งซื้อ</label>
                             <div class="input-group">
@@ -120,7 +148,7 @@
                                 <input type="text" class="form-control" id="customer_name" name="customer_name" required>
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="address" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>ที่อยู่จัดส่ง</label>
                             <div class="input-group">
@@ -136,13 +164,14 @@
                                 <input type="tel" class="form-control" id="phone" name="phone" required>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label"><i class="fas fa-university me-2"></i>ข้อมูลบัญชีสำหรับชำระเงิน</label>
                             <div class="bank-info">
                                 <p class="mb-2">ธนาคาร: ธนาคารกสิกรไทย</p>
                                 <p class="mb-2">ชื่อบัญชี: บจก.คิดโกไตร</p>
                                 <p class="mb-2">เลขที่บัญชี: 206-8-93786-0</p>
-                                <button type="button" class="btn btn-copy" onclick="copyToClipboard('123-4-56789-0')">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="copyToClipboard('206-8-93786-0')">
                                     <i class="fas fa-copy me-2"></i>คัดลอกเลขที่บัญชี
                                 </button>
                             </div>
@@ -157,7 +186,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success"><i class="fas fa-check-circle me-2"></i>ยืนยันการสั่งซื้อ</button>
+                            <button type="submit" class="btn btn-success"><i class="fas fa-check-circle me-2"></i>ยืนยันการชำระเงิน</button>
                         </div>
                     </form>
                 </div>
@@ -165,5 +194,14 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('คัดลอกเลขที่บัญชีเรียบร้อย!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
 </body>
 </html>

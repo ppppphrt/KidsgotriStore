@@ -45,6 +45,17 @@
             background-color: #218838;
             transform: translateY(-2px);
         }
+        .hero-section .btn-outline-light {
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .hero-section .btn-outline-light:hover {
+            background-color: #ffffff;
+            color: #007bff;
+        }
         .product-card {
             transition: transform 0.3s, box-shadow 0.3s;
             border: none;
@@ -59,6 +70,7 @@
         .product-card img {
             height: 250px;
             object-fit: cover;
+            border-radius: 8px;
         }
         .product-card .card-body {
             padding: 20px;
@@ -86,6 +98,16 @@
             background-color: #007bff;
             color: white;
         }
+        .product-card .btn-success {
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        .product-card .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
         .container {
             max-width: 1200px;
         }
@@ -107,8 +129,8 @@
         <!-- Section: Hero / Welcome -->
         <div class="hero-section">
             <h1 class="display-4"><i class="fas fa-store me-2"></i>Welcome To  <span class="text-warning">KGT Store</span></h1>
-
             <a href="#products" class="btn btn-primary btn-lg mt-3"><i class="fas fa-shopping-bag me-2"></i>Shop Now!</a>
+            <a href="{{ url_for('view_cart') }}" class="btn btn-outline-light btn-lg mt-3"><i class="fas fa-cart-shopping me-2"></i>View Cart</a>
         </div>
 
         <!-- Section: Product List -->
@@ -121,7 +143,9 @@
                         <h5 class="card-title">เสื้อยืด</h5>
                         <p class="card-text">KGT Black Shirt - ใส่แล้ววิ่งแรง </p>
                         <p class="text-primary">฿550</p>
-                        <a href="{{ url_for('product_detail', product_id=1) }}" class="btn btn-outline-primary"><i class="fas fa-eye me-2"></i>Detail</a>
+                        <!-- <a href="{{ url_for('checkout', product_id=1) }}" class="btn btn-outline-primary"><i class="fas fa-credit-card me-2"></i>Buy Now</a> -->
+                        <a href="{{ url_for('buy_now', product_id=1) }}" class="btn btn-outline-primary"><i class="fas fa-credit-card me-2"></i>Buy Now</a>
+                        <a href="{{ url_for('add_to_cart', product_id=1) }}" class="btn btn-success"><i class="fas fa-cart-plus me-2"></i>Add to Cart</a>
                     </div>
                 </div>
             </div>
@@ -134,20 +158,23 @@
                         <h5 class="card-title">กระเป๋า</h5>
                         <p class="card-text">KGT Bag - ถือแล้วเท่ เหมาะกับทุกการแต่งตัว</p>
                         <p class="text-primary">฿590</p>
-                        <a href="{{ url_for('product_detail', product_id=2) }}" class="btn btn-outline-primary"><i class="fas fa-eye me-2"></i>Detail</a>
+                        <a href="{{ url_for('buy_now', product_id=2) }}" class="btn btn-outline-primary"><i class="fas fa-credit-card me-2"></i>Buy Now</a>
+                        <a href="{{ url_for('add_to_cart', product_id=2) }}" class="btn btn-success"><i class="fas fa-cart-plus me-2"></i>Add to Cart</a>
                     </div>
                 </div>
             </div>
 
-             <!-- Product Card 3 -->
-             <div class="col-md-4 mb-4">
+            <!-- Product Card 3 -->
+            <div class="col-md-4 mb-4">
                 <div class="product-card shadow-sm">
-                    <img src="{{ url_for('static', filename='images/dress1.jpg') }}" class="card-img-top" alt="เดรสแฟชั่น">
+                    <img src="{{ url_for('static', filename='images/jacket1.jpg') }}" class="card-img-top" alt="เดรสแฟชั่น">
                     <div class="card-body">
                         <h5 class="card-title">Product3</h5>
                         <p class="card-text">Product3 - เดี๋ยวมาแน่ เตรียม F</p>
                         <p class="text-primary">฿999</p>
-                        <a href="{{ url_for('product_detail', product_id=3) }}" class="btn btn-outline-primary"><i class="fas fa-eye me-2"></i>Detail</a>
+                        <a href="{{ url_for('buy_now', product_id=3) }}" class="btn btn-outline-primary"><i class="fas fa-credit-card me-2"></i>Buy Now</a>
+                        <!-- <a href="{{ url_for('checkout') }}" class="btn btn-primary"><i class="fas fa-credit-card me-2"></i>ชำระเงิน</a> -->
+                        <a href="{{ url_for('add_to_cart', product_id=3) }}" class="btn btn-success"><i class="fas fa-cart-plus me-2"></i>Add to Cart</a>
                     </div>
                 </div>
             </div>
